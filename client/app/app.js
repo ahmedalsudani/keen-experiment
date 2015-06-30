@@ -1,2 +1,3 @@
 'use strict';
-console.log('test');
+
+var client = require('../keen/client')
