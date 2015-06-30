@@ -2,6 +2,7 @@ var gulp  = require('gulp');
 var $     = require('gulp-load-plugins')({lazy:false});
 var R     = require('ramda');
 
+require('dotenv').load();
 $.livereload();
 $.livereload.listen();
 
@@ -17,15 +18,21 @@ var paths = {
 var srcPaths = [paths.index, paths.html, paths.scripts, paths.styles];
 
 gulp.task('dev:build', startBuild);
-gulp.task('default', $.sequence('dev:build', 'server', 'watch'));
+gulp.task('default', $.sequence('dev:build', 'server', 'dev:watch'));
 gulp.task('server', startServer);
-gulp.task('watch', startWatch);
+gulp.task('dev:watch', startWatch);
 gulp.task('inject', startInject);
+gulp.task('dotenv', printEnv);
 
 function startBuild() {
   gulp.src(srcPaths, {'base': './client'})
-  .pipe(gulp.dest(paths.destTmp))
-  startInject();
+  .pipe($.iife())
+  .pipe(gulp.dest(paths.destTmp));
+  return startInject();
+}
+
+function printEnv() {
+  console.log(process.env['KEEN_PROJECT_ID']);
 }
 
 function startServer(){
@@ -33,7 +40,10 @@ function startServer(){
 }
 
 function startWatch(){
-  gulp.watch(srcPaths, [$.livereload.changed]);
+  gulp.watch(srcPaths, function (changedFiles) {
+    startBuild();
+    $.livereload.changed(changedFiles);
+  });
 }
 
 function startInject(){
@@ -44,5 +54,5 @@ function startInject(){
   return target
     .pipe( $.inject( scripts,  {relative:true}) )
     .pipe( $.inject( styles,  {relative:true}) )
-    .pipe( gulp.dest( paths.destTmp ) );
+    .pipe( gulp.dest( paths.destTmp) );
 }
