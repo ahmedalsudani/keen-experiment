@@ -1,3 +1,5 @@
 .tmp/
-/node_modules/
+/coverage
 /.env
+/node_modules/*
+!/node_modules/keen-client

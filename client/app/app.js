@@ -1,4 +1,4 @@
 'use strict';
 
-var client = require('../keen/client')
+var client = require('../keen-client')
 window.client = client;
