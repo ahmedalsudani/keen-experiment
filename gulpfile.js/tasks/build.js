@@ -1,8 +1,9 @@
 var browserify = require('browserify');
+var buffer = require('vinyl-buffer');
 var envify = require('envify');
 var gulp  = require('gulp');
+var server = require('../../server');
 var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
 var $ = require('gulp-load-plugins')({
   lazy: false,
   pattern: ['gulp.*', 'gulp-*', 'del']
@@ -11,6 +12,8 @@ var $ = require('gulp-load-plugins')({
 require('dotenv').load();
 $.livereload();
 $.livereload.listen();
+
+var APP_ROOT = '../..';
 
 var paths = {
   index: './client/index.html',
@@ -50,13 +53,12 @@ function startBrowserify() {
 
 function startBuild() {
   gulp.src(buildPaths, {'base': './client'})
-  .pipe(gulp.dest(paths.destTmp));
-
+    .pipe(gulp.dest(paths.destTmp));
   return gulp.start('inject');
 }
 
 function startServer(){
-  require('./server');
+  server();
 }
 
 function startWatch(){

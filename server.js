@@ -1,4 +1,4 @@
-(function(){
+module.exports = function server() {
   'use strict';
   var cors = require('cors');
   var express = require('express');
@@ -13,4 +13,4 @@
     console.log('App Listening on localhost:9000');
   });
 
-})();
+};
