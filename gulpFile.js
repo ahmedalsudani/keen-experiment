@@ -42,17 +42,17 @@ function startBrowserify() {
     'transform': envify
   });
 
-  b.bundle()
+  return b.bundle()
     .pipe(source('bundle.js'))
     .pipe(buffer())
     .pipe(gulp.dest(paths.destTmp));
 }
 
 function startBuild() {
-
   gulp.src(buildPaths, {'base': './client'})
   .pipe(gulp.dest(paths.destTmp));
-  return startInject();
+
+  return gulp.start('inject');
 }
 
 function startServer(){
@@ -61,7 +61,7 @@ function startServer(){
 
 function startWatch(){
   gulp.watch(srcPaths, function (changedFiles) {
-    startBuild();
+    gulp.start('dev:build');
     $.livereload.changed(changedFiles);
   });
 }
