@@ -1,9 +1,8 @@
 'use strict';
-var Keen = require('keen.io');
+var Keen = require('keen-js');
 
-var client = new Keen.configure({
+var client = new Keen({
   'projectId': process.env['KEEN_PROJECT_ID'],
-  'writeKey': process.env['KEEN_WRITE_KEY'],
   'readKey': process.env['KEEN_READ_KEY']
 });
 

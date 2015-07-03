@@ -10,8 +10,6 @@ var $ = require('gulp-load-plugins')({
 });
 
 require('dotenv').load();
-$.livereload();
-$.livereload.listen();
 
 var APP_ROOT = '../..';
 
@@ -32,11 +30,17 @@ var buildPaths = [paths.index, paths.html, paths.styles];
 var srcPaths = [paths.index, paths.html, paths.scripts, paths.styles];
 
 gulp.task('dev:build', ['dev:browserify'], startBuild);
-gulp.task('default', $.sequence('dev:build', 'server', 'dev:watch'));
+gulp.task('default', $.sequence('dev:build', 'server', 'dev:watch', 'dev:livereload'));
 gulp.task('server', startServer);
 gulp.task('dev:watch', startWatch);
 gulp.task('inject', startInject);
 gulp.task('dev:browserify', startBrowserify);
+gulp.task('dev:livereload', startLiveReload)
+
+function startLiveReload() {
+  $.livereload();
+  $.livereload.listen();
+}
 
 function startBrowserify() {
   var b = browserify({
