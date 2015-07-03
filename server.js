@@ -6,6 +6,7 @@ module.exports = function server() {
   var app = express();
 
   app.use(reloader());
+  app.disable('etag');
   app.use(cors());
   app.use(express.static('./.tmp/dest'));
 

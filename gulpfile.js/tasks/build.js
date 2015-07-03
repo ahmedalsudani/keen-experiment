@@ -30,7 +30,7 @@ var buildPaths = [paths.index, paths.html, paths.styles];
 var srcPaths = [paths.index, paths.html, paths.scripts, paths.styles];
 
 gulp.task('dev:build', ['dev:browserify'], startBuild);
-gulp.task('default', $.sequence('dev:build', 'server', 'dev:watch', 'dev:livereload'));
+gulp.task('default', $.sequence('dev:build', 'inject', 'server', 'dev:watch', 'dev:livereload'));
 gulp.task('server', startServer);
 gulp.task('dev:watch', startWatch);
 gulp.task('inject', startInject);
@@ -58,7 +58,6 @@ function startBrowserify() {
 function startBuild() {
   gulp.src(buildPaths, {'base': './client'})
     .pipe(gulp.dest(paths.destTmp));
-  return gulp.start('inject');
 }
 
 function startServer(){

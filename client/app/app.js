@@ -8,7 +8,7 @@ Keen.ready(function(){
   console.log('drawing');
   var query = new Keen.Query("average", {
     eventCollection: "coverage",
-    interval: "minutely",
+    interval: "hourly",
     targetProperty: "coverage.lines.pct",
     timeframe: "this_2_days",
     timezone: "UTC"
