@@ -4,6 +4,7 @@ var envify = require('envify');
 var gulp  = require('gulp');
 var server = require('../../server');
 var source = require('vinyl-source-stream');
+var wiredep = require('wiredep').stream;
 var $ = require('gulp-load-plugins')({
   lazy: false,
   pattern: ['gulp.*', 'gulp-*', 'del']
@@ -14,6 +15,7 @@ require('dotenv').load();
 var APP_ROOT = '../..';
 
 var paths = {
+  bower: './bower_components/**/*',
   index: './client/index.html',
   root: './client',
   html: './client/**/*.html',
@@ -21,16 +23,18 @@ var paths = {
   appJs: './client/app/app.js',
   styles: './client/app/**/*.css',
   destTmp: './.tmp/dest',
+  destBuild: './.tmp/dest/app',
   destIndex: './.tmp/dest/index.html',
-  destScripts: './.tmp/dest/**/*.js',
-  destStyles: './.tmp/dest/**/*.css'
+  destScripts: './.tmp/dest/app/**/*.js',
+  destStyles: './.tmp/dest/app/**/*.css'
 }
 
-var buildPaths = [paths.index, paths.html, paths.styles];
+var copyPaths = [paths.bower];
+var buildPaths = [paths.html, paths.styles];
 var srcPaths = [paths.index, paths.html, paths.scripts, paths.styles];
 
 gulp.task('dev:build', ['dev:browserify'], startBuild);
-gulp.task('default', $.sequence('dev:build', 'inject', 'server', 'dev:watch', 'dev:livereload'));
+gulp.task('default', $.sequence('dev:build', 'inject', 'server', 'dev:livereload'));
 gulp.task('server', startServer);
 gulp.task('dev:watch', startWatch);
 gulp.task('inject', startInject);
@@ -40,6 +44,7 @@ gulp.task('dev:livereload', startLiveReload)
 function startLiveReload() {
   $.livereload();
   $.livereload.listen();
+  gulp.start('dev:watch');
 }
 
 function startBrowserify() {
@@ -52,12 +57,16 @@ function startBrowserify() {
   return b.bundle()
     .pipe(source('bundle.js'))
     .pipe(buffer())
-    .pipe(gulp.dest(paths.destTmp));
+    .pipe(gulp.dest(paths.destBuild));
 }
 
 function startBuild() {
-  gulp.src(buildPaths, {'base': './client'})
+  gulp.src(copyPaths, {'base': './'})
     .pipe(gulp.dest(paths.destTmp));
+  gulp.src(paths.index)
+    .pipe(gulp.dest(paths.destTmp));
+  gulp.src(buildPaths, {'base': './client'})
+    .pipe(gulp.dest(paths.destBuild));
 }
 
 function startServer(){
@@ -77,7 +86,8 @@ function startInject(){
   var styles  = gulp.src( paths.destStyles, {read:false} );
 
   return index
-    .pipe( $.inject( scripts,  {relative:true}) )
-    .pipe( $.inject( styles,  {relative:true}) )
+    .pipe($.inject(scripts, {relative:true}))
+    .pipe($.inject(styles, {relative:true}))
+    .pipe(wiredep())
     .pipe( gulp.dest( paths.destTmp) );
 }

@@ -1,0 +1,13 @@
+{
+  "name": "keen-experiment",
+  "version": "0.0.0",
+  "homepage": "https://github.com/ahmedalsudani/keen-experiment",
+  "authors": [
+    "Ahmed Al-Sudani <ahmed.alsudani@rangle.io>"
+  ],
+  "license": "none",
+  "dependencies": {
+    "angular": "~1.4.1",
+    "keen-coverage": "git@github.com:rangle/keen-coverage.git"
+  }
+}

@@ -11,7 +11,19 @@
 </head>
 <body>
 <h1 id="title"></h1>
-<div id="chart" class=""></div>
+<content ng-app="charter">
+  <div ng-controller="allProjectsCtrl" id="chart" class=""></div>
+  <div ng-controller="oneProjectCtrl" id="chart" class=""></div>
+</content>
+  <!-- bower:js -->
+  <!-- endbower -->
+  <script type="text/javascript">
+    angular.module('keen-coverage', []);
+  </script>
+  <script src="bower_components/keen-coverage/src/keen-coverage/config.js"></script>
+  <script src="bower_components/keen-coverage/src/keen-coverage/coverage.service.js"></script>
+  <script src="bower_components/keen-coverage/src/keen-coverage/keen.service.js"></script>
+
   <!-- inject:js -->
   <!-- endinject -->
 </body>
