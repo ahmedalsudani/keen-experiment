@@ -1,5 +1,4 @@
 'use strict';
-var client = require('../keen-client');
 var Keen = require('keen-js');
 
 angular.module('charter', ['keen-coverage'])
@@ -11,9 +10,11 @@ angular.module('charter', ['keen-coverage'])
   )
   return coverageService;
 })
+
 .controller('allProjectsCtrl', function ($element, coverage, coverageService) {
-  coverageService.chartAllProjects($element[0], 'average' );
+  coverageService.chartAllProjects($element[0], 'average', 'lines');
 })
+
 .controller('oneProjectCtrl', function ($element, coverageService) {
-  coverageService.chartProject('keen-experiment', $element[0], 'average' );
+  coverageService.chartProject('keen-experiment', $element[0], 'average', 'lines');
 });
