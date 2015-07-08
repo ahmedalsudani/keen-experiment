@@ -9,5 +9,8 @@
   "dependencies": {
     "angular": "~1.4.1",
     "keen-coverage": "git@github.com:rangle/keen-coverage.git"
+  },
+  "resolutions": {
+    "angular": "~1.4.1"
   }
 }

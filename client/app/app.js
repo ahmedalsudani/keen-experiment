@@ -12,9 +12,9 @@ angular.module('charter', ['keen-coverage'])
 })
 
 .controller('allProjectsCtrl', function ($element, coverage, coverageService) {
-  coverageService.chartAllProjects($element[0], 'average', 'lines');
+  coverageService.chartAllProjects($element[0]);
 })
 
 .controller('oneProjectCtrl', function ($element, coverageService) {
-  coverageService.chartProject('keen-experiment', $element[0], 'average', 'lines');
+  coverageService.chartProject('keen-experiment', $element[0]);
 });
